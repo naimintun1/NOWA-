@@ -2,6 +2,7 @@ workflows:
   nowa-android:
     name: NOWA Android
     environment:
+      java: 21
       vars:
         PACKAGE_NAME: "com.nowa.app"
     scripts:
