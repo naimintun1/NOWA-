@@ -2,8 +2,6 @@ workflows:
   nowa-android:
     name: NOWA Android
     environment:
-      android_signing:
-        - nowa_keystore
       vars:
         PACKAGE_NAME: "com.nowa.app"
     scripts:
