@@ -1,5 +1,9 @@
 {
   "appId": "com.nowa.app",
   "appName": "NOWA",
-  "webDir": "public"
+  "webDir": "public",
+  "server": {
+    "url": "http://127.0.0.1:3000",
+    "cleartext": true
+  }
 }
