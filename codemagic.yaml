@@ -3,6 +3,8 @@ workflows:
     name: NOWA Android
     environment:
       java: 21
+      android_signing:
+        - nowa_release
       vars:
         PACKAGE_NAME: "com.nowa.app"
     scripts:
@@ -11,6 +13,8 @@ workflows:
       - name: Sync Capacitor
         script: npx cap sync android
       - name: Build AAB
-        script: cd android && ./gradlew bundleRelease
+        script: |
+          cd android
+          ./gradlew bundleRelease
     artifacts:
       - android/app/build/outputs/bundle/release/app-release.aab
