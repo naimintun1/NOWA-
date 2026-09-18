@@ -10,7 +10,7 @@ workflows:
         script: npm install
       - name: Sync Capacitor
         script: npx cap sync android
-      - name: Build APK
-        script: cd android && ./gradlew assembleDebug
+      - name: Build AAB
+        script: cd android && ./gradlew bundleRelease
     artifacts:
-      - android/app/build/outputs/apk/debug/app-debug.apk
+      - android/app/build/outputs/bundle/release/app-release.aab
