@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Friends</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#0d1119;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+.topbar{
+  height:60px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 16px;
+  background:#151a24;
+  border-bottom:1px solid #202532;
+}
+.back{
+  font-size:30px;
+  cursor:pointer;
+  color:#fff;
+}
+.title{
+  font-size:19px;
+  font-weight:600;
+}
+.container{
+  padding:16px;
+}
+#friendsList{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:16px 5px;
+}
+.friend-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  text-align:center;
+  cursor:pointer;
+}
+.friend-avatar{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:#202633;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  color:#8fa3c7;
+  font-weight:bold;
+}
+.friend-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.friend-name{
+  width:100%;
+  font-size:11px;
+  color:#dbe3f2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.empty{
+  color:#7f8da8;
+  font-size:13px;
+  text-align:center;
+  padding:30px 0;
+  grid-column:1/-1;
+}
+</style>
+
+<style id="nowa-global-theme">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .nav,
+body.light-theme .section,
+body.light-theme .profile-card,
+body.light-theme .info,
+body.light-theme .friends-section,
+body.light-theme .item,
+body.light-theme .theme-option,
+body.light-theme .chat-item,
+body.light-theme .online-user,
+body.light-theme .search-results{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .search,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme #messageInput{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .item-title,
+body.light-theme .theme-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name,
+body.light-theme .friend-name,
+body.light-theme .name,
+body.light-theme .title,
+body.light-theme strong{
+  color:#111827 !important;
+}
+
+body.light-theme .item-sub,
+body.light-theme .empty,
+body.light-theme .last-message,
+body.light-theme .chat-time,
+body.light-theme .friend-name,
+body.light-theme .theme-sub,
+body.light-theme .info-title{
+  color:#6b7280 !important;
+}
+
+body.light-theme .back{
+  color:#111827 !important;
+}
+
+body.light-theme .theme-option.active{
+  border-color:#168cff !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<script id="nowa-global-theme-script">
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  document.body.classList.toggle("light-theme", theme === "light");
+})();
+</script>
+
+
+<header class="topbar">
+  <div class="back" onclick="history.back()">‹</div>
+  <div class="title">Friends</div>
+</header>
+
+<main class="container">
+  <div id="friendsList"></div>
+</main>
+
+<script>
+let currentUserId = null;
+
+async function loadFriends(){
+
+  const username = localStorage.getItem("nowaUsername") || "";
+
+  if(!username){
+    window.location.href = "/";
+    return;
+  }
+
+  const userRes = await fetch(
+    "/api/users?q=" + encodeURIComponent(username)
+  );
+
+  if(!userRes.ok) return;
+
+  const users = await userRes.json();
+  const user = users.find(u => u.username === username);
+
+  if(!user) return;
+
+  currentUserId = user.id;
+
+  const response = await fetch(
+    "/api/friends?userId=" + currentUserId
+  );
+
+  if(!response.ok) return;
+
+  const friends = await response.json();
+  const list = document.getElementById("friendsList");
+
+  list.innerHTML = "";
+
+  if(!friends.length){
+    list.innerHTML =
+      '<div class="empty">No friends yet.</div>';
+    return;
+  }
+
+  friends.forEach(friend => {
+
+    const item = document.createElement("div");
+    item.className = "friend-item";
+
+    const avatar = friend.profile_photo
+      ? '<img src="' + friend.profile_photo + '">'
+      : friend.username.charAt(0).toUpperCase();
+
+    item.innerHTML = `
+      <div class="friend-avatar">${avatar}</div>
+      <div class="friend-name">${friend.username}</div>
+    `;
+
+    item.onclick = () => {
+      window.location.href =
+        "/user.html?userId=" + friend.id +
+        "&username=" + encodeURIComponent(friend.username);
+    };
+
+    list.appendChild(item);
+  });
+}
+
+loadFriends();
+</script>
+
+
+<script id="nowa-theme-live">
+(function(){
+  const applyTheme = () => {
+    const theme = localStorage.getItem("nowaTheme") || "dark";
+    document.body.classList.toggle("light-theme", theme === "light");
+  };
+
+  applyTheme();
+
+  window.addEventListener("storage", applyTheme);
+})();
+</script>
+
+</body>
+</html>

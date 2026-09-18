@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NOWA</string>
+    <string name="title_activity_main">NOWA</string>
+    <string name="package_name">com.nowa.app</string>
+    <string name="custom_url_scheme">com.nowa.app</string>
+</resources>

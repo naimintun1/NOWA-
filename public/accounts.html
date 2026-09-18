@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounts</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#0b1020;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+.topbar{
+  height:64px;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  background:#141a2b;
+  border-bottom:1px solid #29334a;
+}
+.back{
+  font-size:28px;
+  margin-right:15px;
+  cursor:pointer;
+}
+.title{
+  font-size:20px;
+  font-weight:bold;
+}
+.content{
+  padding:18px;
+}
+.account{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  margin-bottom:10px;
+  background:#151c2d;
+  border-radius:14px;
+  cursor:pointer;
+}
+.avatar{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  background:#202b43;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  overflow:hidden;
+}
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.name{
+  font-size:15px;
+  font-weight:600;
+}
+.current{
+  font-size:11px;
+  color:#6ea8ff;
+  margin-top:4px;
+}
+.add{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:13px;
+  background:#168cff;
+  color:#fff;
+  font-size:15px;
+  font-weight:600;
+  margin-top:8px;
+}
+.empty{
+  color:#7f8da8;
+  text-align:center;
+  padding:30px 0;
+  font-size:13px;
+}
+</style>
+
+<style id="nowa-global-theme">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .nav,
+body.light-theme .section,
+body.light-theme .profile-card,
+body.light-theme .info,
+body.light-theme .friends-section,
+body.light-theme .item,
+body.light-theme .theme-option,
+body.light-theme .chat-item,
+body.light-theme .online-user,
+body.light-theme .search-results{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .search,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme #messageInput{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .item-title,
+body.light-theme .theme-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name,
+body.light-theme .friend-name,
+body.light-theme .name,
+body.light-theme .title,
+body.light-theme strong{
+  color:#111827 !important;
+}
+
+body.light-theme .item-sub,
+body.light-theme .empty,
+body.light-theme .last-message,
+body.light-theme .chat-time,
+body.light-theme .friend-name,
+body.light-theme .theme-sub,
+body.light-theme .info-title{
+  color:#6b7280 !important;
+}
+
+body.light-theme .back{
+  color:#111827 !important;
+}
+
+body.light-theme .theme-option.active{
+  border-color:#168cff !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<script id="nowa-global-theme-script">
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  document.body.classList.toggle("light-theme", theme === "light");
+})();
+</script>
+
+
+<header class="topbar">
+  <div class="back" onclick="history.back()">‹</div>
+  <div class="title">Accounts</div>
+</header>
+
+<main class="content">
+  <div id="accountList"></div>
+  <button class="add" onclick="addAccount()">Add Account</button>
+</main>
+
+<script>
+const currentUsername =
+  localStorage.getItem("nowaUsername") || "";
+
+let accountList =
+  JSON.parse(localStorage.getItem("nowaAccounts") || "[]");
+
+function saveAccounts(){
+  localStorage.setItem(
+    "nowaAccounts",
+    JSON.stringify(accountList)
+  );
+}
+
+function renderAccounts(){
+
+  const list = document.getElementById("accountList");
+  list.innerHTML = "";
+
+  if(!accountList.length){
+    list.innerHTML =
+      '<div class="empty">No saved accounts.</div>';
+    return;
+  }
+
+  accountList.forEach(account => {
+
+    const item = document.createElement("div");
+    item.className = "account";
+
+    const initial =
+      account.username.charAt(0).toUpperCase();
+
+    item.innerHTML = `
+      <div class="avatar">${initial}</div>
+      <div>
+        <div class="name">${account.username}</div>
+        ${
+          account.username === currentUsername
+          ? '<div class="current">Current account</div>'
+          : ''
+        }
+      </div>
+    `;
+
+    item.onclick = async () => {
+
+      if(account.username === currentUsername){
+        return;
+      }
+
+      const password = prompt(
+        "Enter password for " + account.username
+      );
+
+      if(password === null) return;
+
+      if(!password){
+        alert("Password is required.");
+        return;
+      }
+
+      try{
+
+        const response = await fetch("/api/login", {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            username: account.username,
+            password: password
+          })
+        });
+
+        const data = await response.json();
+
+        if(!response.ok){
+          alert(data.error || "Login failed.");
+          return;
+        }
+
+        localStorage.setItem(
+          "nowaUsername",
+          account.username
+        );
+
+        window.location.href = "/home.html";
+
+      }catch(error){
+        alert("Cannot connect to NOWA server.");
+      }
+    };
+
+    list.appendChild(item);
+  });
+}
+
+async function addAccount(){
+
+  const username = prompt("Enter username");
+  if(!username) return;
+
+  const password = prompt("Enter password");
+  if(password === null) return;
+
+  if(!password){
+    alert("Password is required.");
+    return;
+  }
+
+  try{
+
+    const response = await fetch("/api/login", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        username: username.trim(),
+        password: password
+      })
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+      alert(data.error || "Login failed.");
+      return;
+    }
+
+    if(!accountList.some(
+      a => a.username === username.trim()
+    )){
+      accountList.push({
+        username: username.trim()
+      });
+
+      saveAccounts();
+    }
+
+    localStorage.setItem(
+      "nowaUsername",
+      username.trim()
+    );
+
+    window.location.href = "/home.html";
+
+  }catch(error){
+    alert("Cannot connect to NOWA server.");
+  }
+}
+
+if(
+  currentUsername &&
+  !accountList.some(
+    a => a.username === currentUsername
+  )
+){
+  accountList.push({
+    username: currentUsername
+  });
+
+  saveAccounts();
+}
+
+renderAccounts();
+</script>
+
+
+<script id="nowa-theme-live">
+(function(){
+  const applyTheme = () => {
+    const theme = localStorage.getItem("nowaTheme") || "dark";
+    document.body.classList.toggle("light-theme", theme === "light");
+  };
+
+  applyTheme();
+
+  window.addEventListener("storage", applyTheme);
+})();
+</script>
+
+</body>
+</html>

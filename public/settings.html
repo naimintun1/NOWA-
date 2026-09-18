@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOWA Settings</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#0b1020;
+  color:white;
+  font-family:Arial,sans-serif;
+}
+
+.topbar{
+  height:64px;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  background:#141a2b;
+  border-bottom:1px solid #29334a;
+}
+
+.back{
+  font-size:28px;
+  margin-right:15px;
+  cursor:pointer;
+}
+
+.title{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.content{
+  width:92%;
+  max-width:600px;
+  margin:22px auto;
+}
+
+.section{
+  background:#141a2b;
+  border:1px solid #29334a;
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+
+.item{
+  padding:17px;
+  border-bottom:1px solid #29334a;
+  cursor:pointer;
+}
+
+.item:last-child{
+  border-bottom:none;
+}
+
+.item-title{
+  font-size:16px;
+  font-weight:600;
+}
+
+.item-sub{
+  margin-top:5px;
+  color:#8f9bb3;
+  font-size:13px;
+}
+
+.logout{
+  color:#ff6b6b;
+}
+</style>
+
+<style id="nowa-global-theme">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .nav,
+body.light-theme .section,
+body.light-theme .profile-card,
+body.light-theme .info,
+body.light-theme .friends-section,
+body.light-theme .item,
+body.light-theme .theme-option,
+body.light-theme .chat-item,
+body.light-theme .online-user,
+body.light-theme .search-results{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .search,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme #messageInput{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .item-title,
+body.light-theme .theme-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name,
+body.light-theme .friend-name,
+body.light-theme .name,
+body.light-theme .title,
+body.light-theme strong{
+  color:#111827 !important;
+}
+
+body.light-theme .item-sub,
+body.light-theme .empty,
+body.light-theme .last-message,
+body.light-theme .chat-time,
+body.light-theme .friend-name,
+body.light-theme .theme-sub,
+body.light-theme .info-title{
+  color:#6b7280 !important;
+}
+
+body.light-theme .back{
+  color:#111827 !important;
+}
+
+body.light-theme .theme-option.active{
+  border-color:#168cff !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<script id="nowa-global-theme-script">
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  document.body.classList.toggle("light-theme", theme === "light");
+})();
+</script>
+
+
+<div class="topbar">
+  <div class="back" onclick="history.back()">‹</div>
+  <div class="title">Settings</div>
+</div>
+
+<div class="content">
+
+  <div class="section">
+    <div class="item" onclick="window.location.href='/accounts.html'">
+      <div class="item-title">Account</div>
+      <div class="item-sub">Switch or add another account</div>
+    </div>
+
+    <div class="item" onclick="window.location.href='/password.html'">
+      <div class="item-title">Password</div>
+      <div class="item-sub">Change your password</div>
+    </div>
+
+    <div class="item" onclick="window.location.href='/privacy.html'">
+      <div class="item-title">Privacy</div>
+      <div class="item-sub">Control your privacy</div>
+    </div>
+
+    <div class="item" onclick="window.location.href='/notifications.html'">
+      <div class="item-title">Notifications</div>
+      <div class="item-sub">Manage notifications</div>
+    </div>
+
+    <div class="item" onclick="window.location.href='/theme.html'">
+      <div class="item-title">Theme</div>
+      <div class="item-sub">Customize appearance</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="item logout" onclick="logout()">
+      <div class="item-title">Logout</div>
+      <div class="item-sub">Sign out of NOWA</div>
+    </div>
+
+    <div class="item" onclick="window.location.href='/about.html'">
+      <div class="item-title">About NOWA</div>
+      <div class="item-sub">App information</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+async function logout(){
+  const confirmed = confirm("Are you sure you want to log out?");
+
+  if (!confirmed) return;
+
+  await fetch("/api/logout", {
+    method:"POST"
+  });
+
+  localStorage.removeItem("nowaUsername");
+  localStorage.removeItem("nowaProfilePhoto");
+  window.location.href="/";
+}
+</script>
+
+
+<script id="nowa-theme-live">
+(function(){
+  const applyTheme = () => {
+    const theme = localStorage.getItem("nowaTheme") || "dark";
+    document.body.classList.toggle("light-theme", theme === "light");
+  };
+
+  applyTheme();
+
+  window.addEventListener("storage", applyTheme);
+})();
+</script>
+
+</body>
+</html>

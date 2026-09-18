@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NOWA - Home</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: white;
+    }
+
+    .topbar {
+      height: 64px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #141a2b;
+      border-bottom: 1px solid #29334a;
+      position: sticky;
+      top: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .mini-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #168cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .profile {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #29334a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .content {
+      width: 92%;
+      max-width: 600px;
+      margin: 22px auto 90px;
+    }
+
+    .welcome {
+      margin-bottom: 20px;
+    }
+
+    .welcome h2 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .welcome p {
+      margin: 7px 0 0;
+      color: #8f9bb3;
+    }
+
+    .search {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #29334a;
+      border-radius: 14px;
+      background: #141a2b;
+      color: white;
+      outline: none;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .search:focus {
+      border-color: #168cff;
+    }
+
+    .section {
+      background: #141a2b;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 15px;
+      border: 1px solid #202a40;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 25px 10px;
+      color: #8f9bb3;
+      line-height: 1.6;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 68px;
+      background: #141a2b;
+      border-top: 1px solid #29334a;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      color: #8f9bb3;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .nav-item {
+      position: relative;
+      min-width: 62px;
+      padding: 7px 8px;
+      border-radius: 12px;
+      transition: .2s;
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+      background: rgba(22, 140, 255, 0.18);
+      text-shadow: 0 0 10px rgba(22, 140, 255, 0.8);
+    }
+
+    .nav-item.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -3px;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 3px;
+      border-radius: 3px;
+      background: #168cff;
+      box-shadow: 0 0 8px rgba(22, 140, 255, 0.8);
+    }
+
+    .nav-icon {
+      font-size: 21px;
+      margin-bottom: 3px;
+    }
+  
+
+.search-results{
+  margin-top:8px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.search-result{
+  padding:12px 14px;
+  border-radius:12px;
+  background:#191f2e;
+  color:#fff;
+  cursor:pointer;
+}
+
+.search-result:hover{
+  background:#222b3e;
+}
+
+
+.chat-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:14px;
+  background:#191f2e;
+  margin-bottom:8px;
+  cursor:pointer;
+}
+
+.chat-item:hover{
+  background:#222b3e;
+}
+
+.chat-avatar{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:#29334a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  flex-shrink:0;
+}
+
+.chat-name{
+  font-size:15px;
+  font-weight:600;
+}
+
+
+.online-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  border-radius:14px;
+  background:#191f2e;
+  margin-bottom:8px;
+  cursor:pointer;
+}
+
+.online-user:hover{
+  background:#222b3e;
+}
+
+.online-avatar{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:#29334a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  flex-shrink:0;
+  position:relative;
+}
+
+.online-dot{
+  position:absolute;
+  right:-1px;
+  bottom:-1px;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#22c55e;
+  border:2px solid #191f2e;
+}
+
+.online-name{
+  font-size:15px;
+  font-weight:600;
+}
+\n</style>
+
+<style id="nowa-global-theme">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .nav,
+body.light-theme .section,
+body.light-theme .profile-card,
+body.light-theme .info,
+body.light-theme .friends-section,
+body.light-theme .item,
+body.light-theme .theme-option,
+body.light-theme .chat-item,
+body.light-theme .online-user,
+body.light-theme .search-results{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .search,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme #messageInput{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .item-title,
+body.light-theme .theme-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name,
+body.light-theme .friend-name,
+body.light-theme .name,
+body.light-theme .title,
+body.light-theme strong{
+  color:#111827 !important;
+}
+
+body.light-theme .item-sub,
+body.light-theme .empty,
+body.light-theme .last-message,
+body.light-theme .chat-time,
+body.light-theme .friend-name,
+body.light-theme .theme-sub,
+body.light-theme .info-title{
+  color:#6b7280 !important;
+}
+
+body.light-theme .back{
+  color:#111827 !important;
+}
+
+body.light-theme .theme-option.active{
+  border-color:#168cff !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<script id="nowa-global-theme-script">
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  document.body.classList.toggle("light-theme", theme === "light");
+})();
+</script>
+
+<style id="nowa-theme-style">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .section,
+body.light-theme .search-results,
+body.light-theme .nav{
+  background:#ffffff !important;
+  color:#111827 !important;
+}
+
+body.light-theme .search,
+body.light-theme .chat-item,
+body.light-theme .online-user{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name{
+  color:#111827 !important;
+}
+
+body.light-theme .empty,
+body.light-theme .last-message{
+  color:#6b7280 !important;
+}
+</style>
+<script>
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  if(theme === "light"){
+    document.body.classList.add("light-theme");
+  }
+})();
+</script>
+
+
+  <header class="topbar">
+
+    <div class="brand">
+      <div class="mini-logo" id="homeProfileAvatar">N</div>
+      <span id="homeUsername">User</span>
+    </div>
+
+    <div class="profile">👤</div>
+
+  </header>
+
+
+  <main class="content">
+
+    <input
+      class="search"
+      id="userSearch"
+      type="text"
+      placeholder="Search users..."
+      autocomplete="off"
+    >
+
+    <div id="searchResults" class="search-results"></div>
+
+
+
+
+
+
+    <div class="section">
+
+      <div class="section-title">
+        Chats
+      </div>
+
+      <div class="empty">
+        No conversations yet.<br>
+        Search for a user to start chatting.
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-title">
+        Online Users
+      </div>
+
+      <div id="onlineUsersList">
+        <div class="empty">
+          No users online.
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <nav class="bottom-nav">
+
+    <div class="nav-item active">
+      <div class="nav-icon">⌂</div>
+      Home
+    </div>
+
+    <div class="nav-item" onclick="window.location.href='/chats.html'">
+      <div class="nav-icon">💬</div>
+      Chats
+    </div>
+
+    <div class="nav-item" onclick="window.location.href='/profile.html'">
+      <div class="nav-icon">👤</div>
+      Profile
+    </div>
+
+    <div class="nav-item" onclick="window.location.href='/settings.html'">
+      <div class="nav-icon">⚙</div>
+      Settings
+    </div>
+
+  </nav>
+
+
+<script>
+
+const userSearch = document.getElementById("userSearch");
+const searchResults = document.getElementById("searchResults");
+
+if (userSearch && searchResults) {
+  userSearch.addEventListener("input", async function(){
+    const q = this.value.trim();
+
+    searchResults.innerHTML = "";
+
+    if (!q) return;
+
+    try {
+      const response = await fetch("/api/users?q=" + encodeURIComponent(q));
+      const users = await response.json();
+
+      if (!users.length) {
+        searchResults.innerHTML =
+          '<div class="search-result">No users found.</div>';
+        return;
+      }
+
+      users.forEach(user => {
+        const item = document.createElement("div");
+        item.className = "search-result";
+        item.textContent = user.username;
+        item.onclick = () => {
+          window.location.href =
+            "/user.html?userId=" + user.id +
+            "&username=" + encodeURIComponent(user.username);
+        };
+        searchResults.appendChild(item);
+      });
+
+    } catch (error) {
+      searchResults.innerHTML =
+        '<div class="search-result">Cannot search users.</div>';
+    }
+  });
+}
+
+const homeUsername = localStorage.getItem("nowaUsername");
+
+window.addEventListener("storage", function(e){
+  if(e.key === "nowaProfilePhoto"){
+    const avatar = document.getElementById("homeProfileAvatar");
+
+    if(e.newValue){
+      avatar.textContent = "";
+      avatar.style.backgroundImage = "url(" + e.newValue + ")";
+      avatar.style.backgroundSize = "cover";
+      avatar.style.backgroundPosition = "center";
+      avatar.style.backgroundRepeat = "no-repeat";
+    }
+  }
+});
+
+const homePhoto = localStorage.getItem("nowaProfilePhoto");
+
+if (homeUsername) {
+  document.getElementById("homeUsername").textContent = homeUsername;
+}
+
+if (homePhoto) {
+  const avatar = document.getElementById("homeProfileAvatar");
+  avatar.textContent = "";
+  avatar.style.backgroundImage = "url(" + homePhoto + ")";
+  avatar.style.backgroundSize = "cover";
+  avatar.style.backgroundPosition = "center";
+  avatar.style.backgroundRepeat = "no-repeat";
+
+  const storyAvatar = document.getElementById("storyOwnAvatar");
+  if (storyAvatar) {
+    storyAvatar.textContent = "";
+    storyAvatar.style.width = "100%";
+    storyAvatar.style.height = "100%";
+    storyAvatar.style.borderRadius = "50%";
+    storyAvatar.style.backgroundImage = "url(" + homePhoto + ")";
+    storyAvatar.style.backgroundSize = "cover";
+    storyAvatar.style.backgroundPosition = "center";
+    storyAvatar.style.backgroundRepeat = "no-repeat";
+  }
+}
+</script>
+
+
+
+
+<script>
+async function loadChats(){
+  const username = localStorage.getItem("nowaUsername");
+  if(!username) return;
+
+  const users = await fetch(
+    "/api/users?q=" + encodeURIComponent(username)
+  ).then(r => r.json());
+
+  const currentUser = users.find(u => u.username === username);
+  if(!currentUser) return;
+
+  const response = await fetch(
+    "/api/conversations?userId=" + currentUser.id
+  );
+
+  const conversations = await response.json();
+
+  const section = document.querySelector(".section");
+  const empty = section.querySelector(".empty");
+
+  if(!conversations.length){
+    empty.innerHTML =
+      "No conversations yet.<br>Search for a user to start chatting.";
+    return;
+  }
+
+  empty.remove();
+
+  conversations.forEach(user => {
+    const item = document.createElement("div");
+    item.className = "chat-item";
+
+    const avatar = document.createElement("div");
+    avatar.className = "chat-avatar";
+
+    if(user.profile_photo){
+      avatar.style.backgroundImage = "url(" + user.profile_photo + ")";
+      avatar.style.backgroundSize = "cover";
+      avatar.style.backgroundPosition = "center";
+    }else{
+      avatar.textContent = user.username.charAt(0).toUpperCase();
+    }
+
+    const name = document.createElement("div");
+    name.className = "chat-name";
+    name.textContent = user.username;
+
+    item.appendChild(avatar);
+    item.appendChild(name);
+
+    item.onclick = () => {
+      window.location.href =
+        "/chat.html?userId=" +
+        user.user_id +
+        "&username=" +
+        encodeURIComponent(user.username);
+    };
+
+    section.appendChild(item);
+  });
+}
+
+loadChats();
+</script>
+
+
+<script>
+const savedUsername = localStorage.getItem("nowaUsername");
+
+if(savedUsername){
+  document.getElementById("homeUsername").textContent = savedUsername;
+}
+</script>
+
+
+<script>
+async function loadOnlineUsers(){
+  const username = localStorage.getItem("nowaUsername");
+  if(!username) return;
+
+  try{
+    const users = await fetch(
+      "/api/users?q=" + encodeURIComponent(username)
+    ).then(r => r.json());
+
+    const currentUser = users.find(u => u.username === username);
+    if(!currentUser) return;
+
+    const response = await fetch(
+      "/api/online-users?userId=" + currentUser.id
+    );
+
+    const onlineUsers = await response.json();
+
+    const list = document.getElementById("onlineUsersList");
+    list.innerHTML = "";
+
+    if(!onlineUsers.length){
+      list.innerHTML =
+        '<div class="empty">No users online.</div>';
+      return;
+    }
+
+    onlineUsers.forEach(user => {
+      const item = document.createElement("div");
+      item.className = "online-user";
+
+      const avatar = document.createElement("div");
+      avatar.className = "online-avatar";
+
+      if(user.profile_photo){
+        avatar.style.backgroundImage =
+          "url(" + user.profile_photo + ")";
+        avatar.style.backgroundSize = "cover";
+        avatar.style.backgroundPosition = "center";
+      }else{
+        avatar.textContent =
+          user.username.charAt(0).toUpperCase();
+      }
+
+      const dot = document.createElement("div");
+      dot.className = "online-dot";
+      avatar.appendChild(dot);
+
+      const name = document.createElement("div");
+      name.className = "online-name";
+      name.textContent = user.username;
+
+      item.appendChild(avatar);
+      item.appendChild(name);
+
+      item.onclick = () => {
+        window.location.href =
+          "/chat.html?userId=" +
+          user.id +
+          "&username=" +
+          encodeURIComponent(user.username);
+      };
+
+      list.appendChild(item);
+    });
+
+  }catch(error){
+    console.error("Online users error:", error);
+  }
+}
+
+loadOnlineUsers();
+
+setInterval(loadOnlineUsers, 5000);
+</script>
+\n
+<script id="nowa-theme-live">
+(function(){
+  const applyTheme = () => {
+    const theme = localStorage.getItem("nowaTheme") || "dark";
+    document.body.classList.toggle("light-theme", theme === "light");
+  };
+
+  applyTheme();
+
+  window.addEventListener("storage", applyTheme);
+})();
+</script>
+
+</body>
+</html>

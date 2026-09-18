@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#0d1119;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.topbar{
+  height:58px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 16px;
+  background:#151b27;
+  border-bottom:1px solid #222b3b;
+}
+
+.back{
+  font-size:30px;
+  cursor:pointer;
+}
+
+.title{
+  font-size:18px;
+  font-weight:600;
+}
+
+.content{
+  padding:16px;
+}
+
+.theme-option{
+  padding:16px;
+  margin-bottom:10px;
+  border-radius:12px;
+  background:#151b27;
+  border:1px solid #222b3b;
+  cursor:pointer;
+}
+
+.theme-option.active{
+  border-color:#168cff;
+}
+
+.theme-title{
+  font-size:15px;
+  font-weight:600;
+}
+
+.theme-sub{
+  margin-top:5px;
+  color:#7f8da8;
+  font-size:12px;
+}
+</style>
+
+<style id="nowa-global-theme">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .nav,
+body.light-theme .section,
+body.light-theme .profile-card,
+body.light-theme .info,
+body.light-theme .friends-section,
+body.light-theme .item,
+body.light-theme .theme-option,
+body.light-theme .chat-item,
+body.light-theme .online-user,
+body.light-theme .search-results{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .search,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme #messageInput{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .item-title,
+body.light-theme .theme-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name,
+body.light-theme .friend-name,
+body.light-theme .name,
+body.light-theme .title,
+body.light-theme strong{
+  color:#111827 !important;
+}
+
+body.light-theme .item-sub,
+body.light-theme .empty,
+body.light-theme .last-message,
+body.light-theme .chat-time,
+body.light-theme .friend-name,
+body.light-theme .theme-sub,
+body.light-theme .info-title{
+  color:#6b7280 !important;
+}
+
+body.light-theme .back{
+  color:#111827 !important;
+}
+
+body.light-theme .theme-option.active{
+  border-color:#168cff !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<script id="nowa-global-theme-script">
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  document.body.classList.toggle("light-theme", theme === "light");
+})();
+</script>
+
+
+<header class="topbar">
+  <div class="back" onclick="history.back()">‹</div>
+  <div class="title">Theme</div>
+</header>
+
+<main class="content">
+
+  <div class="theme-option" id="darkTheme">
+    <div class="theme-title">Dark</div>
+    <div class="theme-sub">Use the dark NOWA appearance</div>
+  </div>
+
+  <div class="theme-option" id="lightTheme">
+    <div class="theme-title">Light</div>
+    <div class="theme-sub">Use a light appearance</div>
+  </div>
+
+</main>
+
+<script>
+const darkTheme = document.getElementById("darkTheme");
+const lightTheme = document.getElementById("lightTheme");
+
+function updateSelected(){
+  const theme =
+    localStorage.getItem("nowaTheme") || "dark";
+
+  darkTheme.classList.toggle(
+    "active",
+    theme === "dark"
+  );
+
+  lightTheme.classList.toggle(
+    "active",
+    theme === "light"
+  );
+}
+
+function applyTheme(theme){
+  localStorage.setItem("nowaTheme", theme);
+  document.body.classList.toggle("light-theme", theme === "light");
+  updateSelected();
+}
+
+darkTheme.onclick = () => {
+  applyTheme("dark");
+};
+
+lightTheme.onclick = () => {
+  applyTheme("light");
+};
+
+updateSelected();
+</script>
+
+
+<script id="nowa-theme-live">
+(function(){
+  const applyTheme = () => {
+    const theme = localStorage.getItem("nowaTheme") || "dark";
+    document.body.classList.toggle("light-theme", theme === "light");
+  };
+
+  applyTheme();
+
+  window.addEventListener("storage", applyTheme);
+})();
+</script>
+
+</body>
+</html>

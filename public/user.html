@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOWA User</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0d1220;
+  color:#fff;
+  min-height:100vh;
+}
+.topbar{
+  height:64px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#141a2b;
+  border-bottom:1px solid #29334a;
+}
+.back{font-size:28px;cursor:pointer}
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#168cff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:bold;
+}
+.content{padding:24px 18px}
+.profile-card{
+  background:#141a2b;
+  border:1px solid #29334a;
+  border-radius:18px;
+  padding:24px;
+  text-align:center;
+}
+.big-avatar{
+  width:96px;
+  height:96px;
+  border-radius:50%;
+  background:#168cff;
+  margin:0 auto 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  font-weight:bold;
+}
+.name{
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:18px;
+}
+.actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+}
+button{
+  border:0;
+  padding:11px 20px;
+  border-radius:20px;
+  color:#fff;
+  background:#168cff;
+  font-size:14px;
+}
+.secondary{background:#29334a}
+</style>
+
+<style id="nowa-global-theme">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .nav,
+body.light-theme .section,
+body.light-theme .profile-card,
+body.light-theme .info,
+body.light-theme .friends-section,
+body.light-theme .item,
+body.light-theme .theme-option,
+body.light-theme .chat-item,
+body.light-theme .online-user,
+body.light-theme .search-results{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .search,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme #messageInput{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .item-title,
+body.light-theme .theme-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name,
+body.light-theme .friend-name,
+body.light-theme .name,
+body.light-theme .title,
+body.light-theme strong{
+  color:#111827 !important;
+}
+
+body.light-theme .item-sub,
+body.light-theme .empty,
+body.light-theme .last-message,
+body.light-theme .chat-time,
+body.light-theme .friend-name,
+body.light-theme .theme-sub,
+body.light-theme .info-title{
+  color:#6b7280 !important;
+}
+
+body.light-theme .back{
+  color:#111827 !important;
+}
+
+body.light-theme .theme-option.active{
+  border-color:#168cff !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<script id="nowa-global-theme-script">
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  document.body.classList.toggle("light-theme", theme === "light");
+})();
+</script>
+
+
+<header class="topbar">
+  <div class="back" onclick="history.back()">‹</div>
+  <div class="avatar" id="topAvatar">N</div>
+  <strong id="topUsername">User</strong>
+</header>
+
+<main class="content">
+  <div class="profile-card">
+    <div class="big-avatar" id="bigAvatar">N</div>
+    <div class="name" id="profileUsername">User</div>
+
+    <div class="actions">
+      <button id="followBtn">Follow</button>
+      <button class="secondary" id="chatBtn">Message</button>
+    </div>
+  </div>
+</main>
+
+<script>
+const currentUsername = localStorage.getItem("nowaUsername");
+const params = new URLSearchParams(window.location.search);
+const userId = Number(params.get("userId"));
+const username = params.get("username");
+
+if(!currentUsername || !userId || !username){
+  window.location.href="/home.html";
+}
+
+document.getElementById("topUsername").textContent = username;
+document.getElementById("profileUsername").textContent = username;
+
+fetch("/api/profile?userId=" + userId)
+  .then(response => response.json())
+  .then(data => {
+    if(data.profileHidden){
+      const card = document.querySelector(".profile-card");
+
+      const notice = document.createElement("div");
+      notice.textContent = "This profile is private.";
+      notice.style.cssText =
+        "margin-top:12px;color:#7f8da8;font-size:13px;text-align:center;";
+
+      card.insertBefore(
+        notice,
+        card.querySelector(".actions")
+      );
+    }
+  });
+
+const initial = username.charAt(0).toUpperCase();
+document.getElementById("topAvatar").textContent = initial;
+document.getElementById("bigAvatar").textContent = initial;
+
+fetch("/api/profile-photo?userId=" + userId)
+  .then(response => response.json())
+  .then(data => {
+    if(data.profilePhoto){
+      document.getElementById("topAvatar").textContent = "";
+      document.getElementById("bigAvatar").textContent = "";
+
+      document.getElementById("topAvatar").style.backgroundImage =
+        "url(" + data.profilePhoto + ")";
+
+      document.getElementById("bigAvatar").style.backgroundImage =
+        "url(" + data.profilePhoto + ")";
+
+      document.getElementById("topAvatar").style.backgroundSize = "cover";
+      document.getElementById("bigAvatar").style.backgroundSize = "cover";
+
+      document.getElementById("topAvatar").style.backgroundPosition = "center";
+      document.getElementById("bigAvatar").style.backgroundPosition = "center";
+    }
+  });
+
+const followBtn = document.getElementById("followBtn");
+
+async function getCurrentUser(){
+  const response = await fetch(
+    "/api/users?q=" + encodeURIComponent(currentUsername)
+  );
+  const users = await response.json();
+  return users.find(user => user.username === currentUsername);
+}
+
+async function updateFollow(){
+  const me = await getCurrentUser();
+  if(!me) return;
+
+  const response = await fetch(
+    "/api/follow-status?followerId=" + me.id +
+    "&followingId=" + userId
+  );
+
+  const data = await response.json();
+
+  if(data.friend){
+    followBtn.textContent = "Friend";
+    followBtn.className = "secondary";
+  }else if(data.following){
+    followBtn.textContent = "Following";
+    followBtn.className = "secondary";
+  }else if(data.followsYou){
+    followBtn.textContent = "Follow you";
+    followBtn.className = "secondary";
+  }else{
+    followBtn.textContent = "Follow";
+    followBtn.className = "";
+  }
+}
+
+followBtn.addEventListener("click", async () => {
+  const me = await getCurrentUser();
+  if(!me) return;
+
+  const following =
+    followBtn.textContent === "Following" ||
+    followBtn.textContent === "Friend";
+
+  await fetch(
+    following ? "/api/unfollow" : "/api/follow",
+    {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        followerId:me.id,
+        followingId:userId
+      })
+    }
+  );
+
+  updateFollow();
+});
+
+document.getElementById("chatBtn").onclick = () => {
+  window.location.href =
+    "/chat.html?userId=" + userId +
+    "&username=" + encodeURIComponent(username);
+};
+
+updateFollow();
+</script>
+
+
+<script id="nowa-theme-live">
+(function(){
+  const applyTheme = () => {
+    const theme = localStorage.getItem("nowaTheme") || "dark";
+    document.body.classList.toggle("light-theme", theme === "light");
+  };
+
+  applyTheme();
+
+  window.addEventListener("storage", applyTheme);
+})();
+</script>
+
+</body>
+</html>

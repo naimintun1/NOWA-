@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOWA Profile</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#0b0e14;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.topbar{
+  height:64px;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  border-bottom:1px solid #202532;
+}
+
+.back{
+  font-size:26px;
+  margin-right:15px;
+  cursor:pointer;
+}
+
+.title{
+  font-size:20px;
+  font-weight:700;
+}
+
+.profile{
+  padding:35px 20px;
+  text-align:center;
+}
+
+.avatar{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:#202633;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 18px;
+  overflow:hidden;
+  border:3px solid #30394a;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.default-avatar{
+  font-size:45px;
+  color:#8fa3c7;
+}
+
+.username{
+  font-size:23px;
+  font-weight:700;
+  margin-bottom:25px;
+}
+
+.upload{
+  display:inline-block;
+  padding:12px 22px;
+  border-radius:12px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+input[type="file"]{
+  display:none;
+}
+
+.info{
+  margin-top:35px;
+  text-align:left;
+  background:#151a24;
+  border-radius:16px;
+  padding:18px;
+}
+
+.info-title{
+  color:#8d98ad;
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+.info-value{
+  font-size:16px;
+}
+
+#bioInput{
+  width:100%;
+  min-height:90px;
+  resize:none;
+  border:0;
+  outline:0;
+  border-radius:12px;
+  padding:12px;
+  background:#0d1119;
+  color:#fff;
+  font-size:15px;
+  font-family:Arial,sans-serif;
+}
+
+#saveBio{
+  margin-top:10px;
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:11px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:600;
+}
+
+#deleteBio{
+  margin-top:8px;
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:11px;
+  background:#29334a;
+  color:#9aa7bd;
+  font-weight:600;
+}
+
+#bioStatus{
+  margin-top:8px;
+  font-size:12px;
+  color:#7f8da8;
+}
+
+.friends-section{
+  margin-top:18px;
+  background:#151a24;
+  border-radius:16px;
+  padding:18px;
+  text-align:left;
+}
+
+.friends-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.friends-count{
+  color:#8d98ad;
+  font-size:13px;
+}
+
+.friend-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:8px 2px;
+  border:0;
+  text-align:center;
+}
+
+.friends-section #friendsList{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px 4px;
+  margin-top:10px;
+}
+
+.friend-avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#202633;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  color:#8fa3c7;
+  font-weight:bold;
+}
+
+.friend-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.friend-name{
+  width:100%;
+  font-size:11px;
+  font-weight:500;
+  color:#dbe3f2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+#seeMoreFriends{
+  width:100%;
+  margin-top:12px;
+  padding:10px;
+  border:0;
+  border-radius:10px;
+  background:#29334a;
+  color:#fff;
+  font-weight:600;
+}
+</style>
+
+<style id="nowa-global-theme">
+body.light-theme{
+  background:#f4f6fa !important;
+  color:#111827 !important;
+}
+
+body.light-theme .topbar,
+body.light-theme .nav,
+body.light-theme .section,
+body.light-theme .profile-card,
+body.light-theme .info,
+body.light-theme .friends-section,
+body.light-theme .item,
+body.light-theme .theme-option,
+body.light-theme .chat-item,
+body.light-theme .online-user,
+body.light-theme .search-results{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .search,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme #messageInput{
+  background:#eef1f6 !important;
+  color:#111827 !important;
+  border-color:#dfe4ec !important;
+}
+
+body.light-theme .section-title,
+body.light-theme .item-title,
+body.light-theme .theme-title,
+body.light-theme .username,
+body.light-theme .chat-name,
+body.light-theme .online-name,
+body.light-theme .friend-name,
+body.light-theme .name,
+body.light-theme .title,
+body.light-theme strong{
+  color:#111827 !important;
+}
+
+body.light-theme .item-sub,
+body.light-theme .empty,
+body.light-theme .last-message,
+body.light-theme .chat-time,
+body.light-theme .friend-name,
+body.light-theme .theme-sub,
+body.light-theme .info-title{
+  color:#6b7280 !important;
+}
+
+body.light-theme .back{
+  color:#111827 !important;
+}
+
+body.light-theme .theme-option.active{
+  border-color:#168cff !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<script id="nowa-global-theme-script">
+(function(){
+  const theme = localStorage.getItem("nowaTheme") || "dark";
+  document.body.classList.toggle("light-theme", theme === "light");
+})();
+</script>
+
+
+<div class="topbar">
+  <div class="back" onclick="history.back()">‹</div>
+  <div class="title">Profile</div>
+</div>
+
+<div class="profile">
+
+  <div class="avatar">
+    <div class="default-avatar" id="defaultAvatar">N</div>
+    <img id="profileImage">
+  </div>
+
+  <div class="username" id="username">User</div>
+
+  <label class="upload">
+    Choose Profile Photo
+    <input type="file" id="photoInput" accept="image/*">
+  </label>
+
+  <div class="info">
+    <div class="info-title">Username</div>
+    <div class="info-value" id="infoUsername">User</div>
+  </div>
+
+  <div class="info">
+    <div class="info-title">Bio</div>
+    <textarea id="bioInput" maxlength="150" placeholder="Write something about yourself..."></textarea>
+    <button id="saveBio">Save Bio</button>
+    <button id="deleteBio" style="display:none;">Delete Bio</button>
+    <div id="bioStatus"></div>
+  </div>
+
+  <div class="friends-section">
+    <div class="friends-header">
+      <div class="info-title">Friends</div>
+      <div class="friends-count" id="friendsCount">0</div>
+    </div>
+
+    <div id="friendsList"></div>
+
+    <button id="seeMoreFriends">See more friends</button>
+  </div>
+
+</div>
+
+<script>
+
+const username = localStorage.getItem("nowaUsername");
+let currentUserId = null;
+
+if(!username){
+  window.location.href = "/";
+}else{
+  document.getElementById("username").textContent = username;
+  document.getElementById("infoUsername").textContent = username;
+}
+
+fetch("/api/users?q=" + encodeURIComponent(username))
+  .then(response => response.json())
+  .then(users => {
+    const user = users.find(u => u.username === username);
+    if (user) {
+      currentUserId = user.id;
+      loadProfileBio();
+      loadFriends();
+    }
+  });
+
+const savedPhoto = localStorage.getItem("nowaProfilePhoto");
+
+if(savedPhoto){
+  document.getElementById("profileImage").src = savedPhoto;
+  document.getElementById("profileImage").style.display = "block";
+  document.getElementById("defaultAvatar").style.display = "none";
+}
+
+document.getElementById("photoInput").addEventListener("change", function(){
+  const file = this.files[0];
+
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e){
+    localStorage.setItem("nowaProfilePhoto", e.target.result);
+
+    fetch("/api/profile-photo", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        userId: currentUserId,
+        profilePhoto: e.target.result
+      })
+    });
+
+    document.getElementById("profileImage").src = e.target.result;
+    document.getElementById("profileImage").style.display = "block";
+    document.getElementById("defaultAvatar").style.display = "none";
+
+    localStorage.setItem("nowaProfilePhotoUpdated", Date.now());
+  };
+
+  reader.readAsDataURL(file);
+});
+
+async function loadProfileBio(){
+  if(!currentUserId) return;
+
+  const response = await fetch("/api/profile?userId=" + currentUserId);
+  if(!response.ok) return;
+
+  const data = await response.json();
+  document.getElementById("bioInput").value = data.bio || "";
+
+  if(data.bio){
+    document.getElementById("saveBio").style.display = "none";
+    document.getElementById("deleteBio").style.display = "block";
+  }
+}
+
+document.getElementById("saveBio").addEventListener("click", async () => {
+  const bio = document.getElementById("bioInput").value.trim();
+
+  const response = await fetch("/api/profile", {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      userId: currentUserId,
+      bio: bio
+    })
+  });
+
+  if(response.ok){
+    document.getElementById("saveBio").style.display = "none";
+    document.getElementById("deleteBio").style.display = "block";
+    document.getElementById("bioStatus").textContent = "Bio saved.";
+  }
+});
+
+document.getElementById("deleteBio").addEventListener("click", async () => {
+  const confirmed = confirm("Delete your Bio?");
+
+  if(!confirmed) return;
+
+  const response = await fetch("/api/profile", {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      userId: currentUserId,
+      bio: ""
+    })
+  });
+
+  if(response.ok){
+    document.getElementById("bioInput").value = "";
+    document.getElementById("deleteBio").style.display = "none";
+    document.getElementById("saveBio").style.display = "block";
+    document.getElementById("bioStatus").textContent = "Bio deleted.";
+  }
+});
+
+
+async function loadFriends(){
+  if(!currentUserId) return;
+
+  const [friendsRes, countRes] = await Promise.all([
+    fetch("/api/friends?userId=" + currentUserId),
+    fetch("/api/friends-count?userId=" + currentUserId)
+  ]);
+
+  if(!friendsRes.ok || !countRes.ok) return;
+
+  const friends = await friendsRes.json();
+  const countData = await countRes.json();
+
+  document.getElementById("friendsCount").textContent = countData.count;
+
+  const list = document.getElementById("friendsList");
+  list.innerHTML = "";
+
+  if(!friends.length){
+    list.innerHTML = '<div style="color:#7f8da8;font-size:13px;padding:10px 0;">No friends yet.</div>';
+  }else{
+    friends.forEach(friend => {
+      const item = document.createElement("div");
+      item.className = "friend-item";
+
+      const avatar = friend.profile_photo
+        ? '<img src="' + friend.profile_photo + '">'
+        : friend.username.charAt(0).toUpperCase();
+
+      item.innerHTML = `
+        <div class="friend-avatar">${avatar}</div>
+        <div class="friend-name">${friend.username}</div>
+      `;
+
+      item.onclick = () => {
+        window.location.href =
+          "/user.html?userId=" + friend.id +
+          "&username=" + encodeURIComponent(friend.username);
+      };
+
+      list.appendChild(item);
+    });
+  }
+
+  const seeMore = document.getElementById("seeMoreFriends");
+
+seeMore.style.display = countData.count > 10 ? "block" : "none";
+
+seeMore.onclick = () => {
+  window.location.href = "/friends.html";
+};
+}
+
+</script>
+
+
+<script id="nowa-theme-live">
+(function(){
+  const applyTheme = () => {
+    const theme = localStorage.getItem("nowaTheme") || "dark";
+    document.body.classList.toggle("light-theme", theme === "light");
+  };
+
+  applyTheme();
+
+  window.addEventListener("storage", applyTheme);
+})();
+</script>
+
+</body>
+</html>
