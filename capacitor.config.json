@@ -3,7 +3,7 @@
   "appName": "NOWA",
   "webDir": "public",
   "server": {
-    "url": "http://127.0.0.1:3000",
+    "url": "https://nowa-sd41.onrender.com",
     "cleartext": true
   }
 }
