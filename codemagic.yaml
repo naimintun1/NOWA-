@@ -16,5 +16,7 @@ workflows:
         script: |
           cd android
           ./gradlew assembleRelease
+          echo "=== APK FILES ==="
+          find android -type f -name "*.apk" -print
     artifacts:
       - android/app/build/outputs/apk/release/*.apk
